@@ -4,12 +4,14 @@
 {% block title %}Welcome{% endblock %}
 
 {% block body %}
-<h1> Welcome to NTC netutils Django front end demo</h1>
+<h1> Welcome to NTC netutils Django front end demo.</h1>
 
 <body>
     <p>
         This is the webpage for running NTC netutils utilities.
     </p>
+    <h2> Supported Netutils Functions:</h2>
+    <a href="{%url 'ping' %}">Ping</a>
 </body>
 {% endblock %}
 

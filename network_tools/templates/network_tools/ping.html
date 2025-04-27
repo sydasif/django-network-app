@@ -1,0 +1,22 @@
+
+{% extends "base.html" %}
+
+{% block title %}TCP Ping{% endblock %}
+
+{% block body %}
+<h2> TCP Ping </h2>
+<p>
+    Verifies whether a TCP port is open on a given IP address
+</p>
+<form action="/ping/" method="get">
+    <label for="">Please enter Host IP Address:</label>
+    <input name="ip">
+    <div><label for="">Please enter TCP Port:</label>
+        <input type="number" name="port" min="0" max="65535">
+    </div>
+    <div><button type="submit">Submit</button></div>
+</form>
+<div class="result">{{test_result|linebreaks}}</div>
+<a href="{%url 'home' %}">home</a>
+{% endblock %}
+
