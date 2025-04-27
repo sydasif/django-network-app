@@ -3,7 +3,7 @@
 
 {% block title %}TCP Ping{% endblock %}
 
-{% block body %}
+{% block content %}
 <h2> TCP Ping </h2>
 <p>
     Verifies whether a TCP port is open on a given IP address
@@ -19,4 +19,3 @@
 <div class="result">{{test_result|linebreaks}}</div>
 <a href="{%url 'home' %}">home</a>
 {% endblock %}
-
