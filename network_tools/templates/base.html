@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="icon" href="/static/favicon.txt" type="image/x-icon">
+    <link rel="icon" href="{% static 'favicon.txt' %}" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;

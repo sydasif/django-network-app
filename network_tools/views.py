@@ -29,3 +29,25 @@ def ping(request):
             )
 
     return render(request, "network_tools/ping.html", test_result)
+
+
+def ip_addr(request):
+    test_result = {}
+
+    if request.GET.get("cidr") == "":
+        test_result["test_result"] = "Please a valid CIDR value [1-24]"
+    elif "cidr" in request.GET:
+        cidr = int(request.GET["cidr"])
+        netmask_result = cidr_to_netmask(cidr)
+        test_result["netmask_result"] = (
+            f"Netmask for CIDR value {cidr} is {netmask_result}"
+        )
+    elif "netmask" in request.GET:
+        netmask = request.GET["netmask"]
+        if is_netmask(netmask) is False:
+            test_result["cidr_result"] = "Please enter a valid Netmask"
+            return render(request, "network_tools/ip_addr.html", test_result)
+        cidr_value = netmask_to_cidr(netmask)
+        test_result["cidr_result"] = f"CIDR Value for netmask {netmask} is {cidr_value}"
+
+    return render(request, "network_tools/ip_addr.html", test_result)
