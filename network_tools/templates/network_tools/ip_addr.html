@@ -3,30 +3,43 @@
 {% block title %}IP Address Tools{% endblock %}
 
 {% block content %}
+<h2>IP Address Tools</h2>
+<p>Utilities for converting between CIDR notation and Netmask.</p>
 
-<h2> cidr_to_netmask</h2>
-<p>
-    Creates a decimal format of a CIDR value.
-</p>
-<form action="/ip_addr" method="get">
-    <div><label for="">Please enter CIDR value:</label>
-        <input type="number" name="cidr" min="1" max="32">
+<h3>cidr_to_netmask</h3>
+<p>Creates a decimal format of a CIDR value.</p>
+<form action="/ip_addr" method="get" style="margin-bottom: 20px;">
+    <div style="margin-bottom: 10px;">
+        <label for="cidr">Please enter CIDR value:</label>
+        <input id="cidr" type="number" name="cidr" min="1" max="32" required>
     </div>
-    <div><button type="submit">Submit</button></div>
-</form>
-<div class="result">{{netmask_result|linebreaks}}</div>
-</div>
-<h2> netmask_to_cidr</h2>
-<p>
-    Creates a CIDR notation of a given subnet mask in decimal format.
-</p>
-<form action="/ip_addr" method="get">
-    <div><label for="">Please enter a netmask value:</label>
-        <input name="netmask">
+    <div>
+        <button type="submit">Submit</button>
     </div>
-    <div><button type="submit">Submit</button></div>
 </form>
-<div class="result">{{cidr_result|linebreaks}}</div>
+
+{% if netmask_result %}
+    <div class="result" style="margin-bottom: 20px;">{{ netmask_result|linebreaks }}</div>
+{% endif %}
+
+<h3>netmask_to_cidr</h3>
+<p>Creates a CIDR notation of a given subnet mask in decimal format.</p>
+<form action="/ip_addr" method="get" style="margin-bottom: 20px;">
+    <div style="margin-bottom: 10px;">
+        <label for="netmask">Please enter a netmask value:</label>
+        <input id="netmask" name="netmask" required>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+{% if cidr_result %}
+    <div class="result" style="margin-bottom: 20px;">{{ cidr_result|linebreaks }}</div>
+{% endif %}
+
+<div style="margin-top: 30px;">
+    <a href="{% url 'home' %}" style="text-decoration: none; font-weight: bold;">Home</a>
 </div>
-<a href="{%url 'home' %}">home</a>
+
 {% endblock %}

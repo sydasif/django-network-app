@@ -3,15 +3,15 @@
 {% block title %}TCP Ping{% endblock %}
 
 {% block content %}
-<h2> TCP Ping </h2>
+<h2>TCP Ping</h2>
 <p>Verifies whether a TCP port is open on a given IP address.</p>
 
-<form action="/ping/" method="get">
-    <div>
+<form action="/ping/" method="get" style="margin-bottom: 20px;">
+    <div style="margin-bottom: 10px;">
         <label for="ip">Please enter Host IP Address:</label>
         <input id="ip" name="ip" required>
     </div>
-    <div>
+    <div style="margin-bottom: 10px;">
         <label for="port">Please enter TCP Port:</label>
         <input id="port" type="number" name="port" min="0" max="65535" required>
     </div>
@@ -21,8 +21,10 @@
 </form>
 
 {% if test_result %}
-    <div class="result" style="color: green;">{{ test_result|linebreaks }}</div>
+    <div class="result" style="margin-bottom: 20px;">{{ test_result|linebreaks }}</div>
 {% endif %}
 
-<a href="{% url 'home' %}">Home</a>
+<div style="margin-top: 30px;">
+    <a href="{% url 'home' %}" style="text-decoration: none; font-weight: bold;">Home</a>
+</div>
 {% endblock %}
