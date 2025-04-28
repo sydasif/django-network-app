@@ -6,7 +6,7 @@
 <h2>IP Address Tools</h2>
 <p>Utilities for converting between CIDR notation and Netmask.</p>
 
-<h3>cidr_to_netmask</h3>
+<h3>CIDR to Netmask</h3>
 <p>Creates a decimal format of a CIDR value.</p>
 <form action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
@@ -22,7 +22,7 @@
     <div class="result" style="margin-bottom: 20px;">{{ netmask_result|linebreaks }}</div>
 {% endif %}
 
-<h3>netmask_to_cidr</h3>
+<h3>Netmask to CIDR</h3>
 <p>Creates a CIDR notation of a given subnet mask in decimal format.</p>
 <form action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
@@ -52,6 +52,31 @@
 
 {% if netmask_v6_result %}
     <div class="result" style="margin-bottom: 20px;">{{ netmask_v6_result|linebreaks }}</div>
+{% endif %}
+
+<h3>Get All Hosts from CIDR</h3>  {# New Section #}
+<form action="/ip_addr" method="get" style="margin-bottom: 20px;">
+    <div style="margin-bottom: 10px;">
+        <label for="network_cidr">Please enter network CIDR:</label>
+        <input id="network_cidr" type="text" name="network_cidr" required>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+{% if host_list %}  {# New Result Display #}
+    <div class="result" style="margin-bottom: 20px;">
+        <ul>
+            {% for host in host_list %}
+                <li>{{ host }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{% if host_list_error %}  {# New Error Display #}
+    <div class="result error" style="margin-bottom: 20px; color: red;">{{ host_list_error|linebreaks }}</div>
 {% endif %}
 
 <div style="margin-top: 30px;">

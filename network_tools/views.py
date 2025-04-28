@@ -6,6 +6,7 @@ from netutils.ip import (
     netmask_to_cidr,
     is_netmask,
     cidr_to_netmaskv6,
+    get_all_host,  # Import get_all_host
 )
 
 
@@ -63,5 +64,13 @@ def ip_addr(request):
         test_result["netmask_v6_result"] = (
             f"Netmask for CIDR value {cidr_v6} is {netmask_v6_result}"
         )
+
+    if request.GET.get("network_cidr"):  # New code block
+        network_cidr = request.GET["network_cidr"]
+        try:
+            host_list = list(get_all_host(network_cidr))
+            test_result["host_list"] = host_list
+        except ValueError as e:
+            test_result["host_list_error"] = str(e)
 
     return render(request, "network_tools/ip_addr.html", test_result)
