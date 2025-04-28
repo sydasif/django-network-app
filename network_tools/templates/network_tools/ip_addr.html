@@ -20,8 +20,11 @@
                 <button type="submit">Submit</button>
             </div>
         </form>
-        <div id="netmask_result_display" class="result" style="margin-bottom: 20px;">{% if netmask_result %}{{
-            netmask_result|linebreaks }}{% endif %}</div>
+        <div id="netmask_result_display" class="result" style="margin-bottom: 20px;">
+            {% if test_result.netmask_result %}
+                {{ test_result.netmask_result|linebreaks }}
+            {% endif %}
+        </div>
 
         <h3>Netmask to CIDR</h3>
         <p>Creates a CIDR notation of a given subnet mask in decimal format.</p>
@@ -34,8 +37,11 @@
                 <button type="submit">Submit</button>
             </div>
         </form>
-        <div id="cidr_result_display" class="result" style="margin-bottom: 20px;">{% if cidr_result %}{{
-            cidr_result|linebreaks }}{% endif %}</div>
+        <div id="cidr_result_display" class="result" style="margin-bottom: 20px;">
+            {% if test_result.cidr_result %}
+                {{ test_result.cidr_result|linebreaks }}
+            {% endif %}
+        </div>
 
         <h3>IPv6 CIDR to Netmask</h3>
         <p>Creates an IPv6 format of a CIDR value.</p>
@@ -48,13 +54,16 @@
                 <button type="submit">Submit</button>
             </div>
         </form>
-        <div id="netmask_v6_result_display" class="result" style="margin-bottom: 20px;">{% if netmask_v6_result %}{{
-            netmask_v6_result|linebreaks }}{% endif %}</div>
+        <div id="netmask_v6_result_display" class="result" style="margin-bottom: 20px;">
+            {% if test_result.netmask_v6_result %}
+                {{ test_result.netmask_v6_result|linebreaks }}
+            {% endif %}
+        </div>
     </div>
 
     <!-- Right Column -->
     <div style="flex: 1;">
-        <h3>Get All Hosts from CIDR</h3> {# Moved Section #}
+        <h3>Get All Hosts from CIDR</h3>
         <p>Creates a list of all possible hosts from a given CIDR</p>
         <form id="network_cidr_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
             <div style="margin-bottom: 10px;">
@@ -63,10 +72,11 @@
             </div>
             <div>
                 <button type="submit">Submit</button>
+                <button type="button" id="openNewWindow" style="margin-left: 10px;">Open in New Window</button>
             </div>
         </form>
         <div id="host_list_display" class="result" style="margin-bottom: 20px;">
-            {% if host_list %}
+            {% if test_result.host_list %}
             <div style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 5px;">
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
@@ -75,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for host in host_list %}
+                        {% for host in test_result.host_list %}
                         <tr>
                             <td style="border: 1px solid #ccc; padding: 8px;">{{ host }}</td>
                         </tr>
@@ -85,8 +95,11 @@
             </div>
             {% endif %}
         </div>
-        <div id="host_list_error_display" class="result error" style="margin-bottom: 20px; color: red;">{% if
-            host_list_error %}{{ host_list_error|linebreaks }}{% endif %}</div>
+        <div id="host_list_error_display" class="result error" style="margin-bottom: 20px; color: red;">
+            {% if test_result.host_list_error %}
+                {{ test_result.host_list_error|linebreaks }}
+            {% endif %}
+        </div>
     </div>
 
 </div> <!-- End Main container -->
