@@ -6,15 +6,26 @@ from netutils.ip import (
     netmask_to_cidr,
     is_netmask,
     cidr_to_netmaskv6,
-    get_all_host,  # Import get_all_host
+    get_all_host,
 )
 
 
 def home(request):
+    """Renders the home page."""
     return render(request, "network_tools/home.html")
 
 
 def ping(request):
+    """
+    Handles TCP ping requests.
+
+    Retrieves 'ip' and 'port' from GET parameters, performs a TCP ping,
+    and renders the ping results page.
+
+    Context passed to template:
+        test_result (str): A message indicating the ping success or failure,
+                           or an error message if input is invalid.
+    """
     test_result = {}
 
     if request.GET.get("ip") == "":
@@ -39,6 +50,20 @@ def ping(request):
 
 
 def ip_addr(request):
+    """
+    Handles various IP address and CIDR/Netmask conversions.
+
+    Retrieves 'cidr', 'netmask', 'cidr_v6', or 'network_cidr' from GET
+    parameters, performs the requested conversion or calculation using
+    netutils, and renders the IP address tools page.
+
+    Context passed to template:
+        netmask_result (str, optional): Result of CIDR to Netmask conversion.
+        cidr_result (str, optional): Result of Netmask to CIDR conversion or error.
+        netmask_v6_result (str, optional): Result of IPv6 CIDR to Netmask conversion.
+        host_list (list, optional): List of host IPs generated from network_cidr.
+        host_list_error (str, optional): Error message if network_cidr is invalid.
+    """
     test_result = {}
 
     if request.GET.get("cidr"):
@@ -65,7 +90,7 @@ def ip_addr(request):
             f"Netmask for CIDR value {cidr_v6} is {netmask_v6_result}"
         )
 
-    if request.GET.get("network_cidr"):  # New code block
+    if request.GET.get("network_cidr"):
         network_cidr = request.GET["network_cidr"]
         try:
             host_list = list(get_all_host(network_cidr))
