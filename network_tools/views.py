@@ -1,6 +1,12 @@
 from django.shortcuts import render
 from netutils.ping import tcp_ping
-from netutils.ip import is_ip, cidr_to_netmask, netmask_to_cidr, is_netmask
+from netutils.ip import (
+    is_ip,
+    cidr_to_netmask,
+    netmask_to_cidr,
+    is_netmask,
+    cidr_to_netmaskv6,
+)
 
 
 def home(request):
@@ -51,7 +57,11 @@ def ip_addr(request):
                 f"CIDR Value for netmask {netmask} is {cidr_value}"
             )
 
-    if not test_result:
-        test_result["test_result"] = "Please provide a CIDR or Netmask value."
+    if request.GET.get("cidr_v6"):
+        cidr_v6 = int(request.GET["cidr_v6"])
+        netmask_v6_result = cidr_to_netmaskv6(cidr_v6)
+        test_result["netmask_v6_result"] = (
+            f"Netmask for CIDR value {cidr_v6} is {netmask_v6_result}"
+        )
 
     return render(request, "network_tools/ip_addr.html", test_result)

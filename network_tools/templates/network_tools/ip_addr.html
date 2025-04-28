@@ -38,6 +38,22 @@
     <div class="result" style="margin-bottom: 20px;">{{ cidr_result|linebreaks }}</div>
 {% endif %}
 
+<h3>IPv6 CIDR to Netmask</h3>
+<p>Creates an IPv6 format of a CIDR value.</p>
+<form action="/ip_addr" method="get" style="margin-bottom: 20px;">
+    <div style="margin-bottom: 10px;">
+        <label for="cidr_v6">Please enter CIDR value:</label>
+        <input id="cidr_v6" type="number" name="cidr_v6" min="1" max="128" required>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+{% if netmask_v6_result %}
+    <div class="result" style="margin-bottom: 20px;">{{ netmask_v6_result|linebreaks }}</div>
+{% endif %}
+
 <div style="margin-top: 30px;">
     <a href="{% url 'home' %}" style="text-decoration: none; font-weight: bold;">Home</a>
 </div>
