@@ -1,3 +1,4 @@
+import ipaddress
 from django.http import JsonResponse
 from django.shortcuts import render
 from netutils.ping import tcp_ping
@@ -30,26 +31,37 @@ def ping(request):
     """
     test_result = {}
 
-    if request.GET.get("ip") == "":
-        test_result["test_result"] = f"Please enter an IP Address {request.GET}"
-    elif "ip" in request.GET:
-        if is_ip(request.GET["ip"]) is False:
+    ip_address = request.GET.get("ip")
+    port_str = request.GET.get("port")
+
+    if not ip_address:
+        test_result["test_result"] = "Please enter an IP Address"
+    elif not port_str:
+        test_result["test_result"] = "Please enter a TCP Port"
+    else:
+        if is_ip(ip_address) is False:
             test_result["test_result"] = "Please enter a valid IP Address"
-            if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-                return JsonResponse(test_result)
-            else:
-                return render(request, "network_tools/ping.html", test_result)
-        host_ip = request.GET["ip"]
-        host_port = request.GET["port"]
-        ping_result = tcp_ping(host_ip, host_port)
-        if ping_result is True:
-            test_result["test_result"] = (
-                f"Success: Port {host_port} is Open on host {host_ip}"
-            )
         else:
-            test_result["test_result"] = (
-                f"Failure: Cannot open connection to Port {host_port} on host {host_ip}"
-            )
+            try:
+                port = int(port_str)
+                if 0 <= port <= 65535:
+                    host_ip = ip_address
+                    host_port = port
+                    ping_result = tcp_ping(host_ip, host_port)
+                    if ping_result is True:
+                        test_result["test_result"] = (
+                            f"Success: Port {host_port} is Open on host {host_ip}"
+                        )
+                    else:
+                        test_result["test_result"] = (
+                            f"Failure: Cannot open connection to Port {host_port} on host {host_ip}"
+                        )
+                else:
+                    test_result["test_result"] = (
+                        "Please enter a valid TCP Port (0-65535)"
+                    )
+            except ValueError:
+                test_result["test_result"] = "Please enter a valid TCP Port (0-65535)"
 
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return JsonResponse(test_result)
@@ -61,8 +73,13 @@ def _handle_cidr_to_netmask(cidr_param):
     """Helper function to handle CIDR to Netmask conversion."""
     try:
         cidr = int(cidr_param)
-        netmask_result = cidr_to_netmask(cidr)
-        return {"netmask_result": f"Netmask for CIDR value {cidr} is {netmask_result}"}
+        if 1 <= cidr <= 32:
+            netmask_result = cidr_to_netmask(cidr)
+            return {
+                "netmask_result": f"Netmask for CIDR value {cidr} is {netmask_result}"
+            }
+        else:
+            return {"netmask_result": "CIDR value must be between 1 and 32"}
     except ValueError:
         return {"netmask_result": "Invalid CIDR value"}
 
@@ -82,10 +99,13 @@ def _handle_cidr_v6_to_netmask(cidr_v6_param):
     """Helper function to handle IPv6 CIDR to Netmask conversion."""
     try:
         cidr_v6 = int(cidr_v6_param)
-        netmask_v6_result = cidr_to_netmaskv6(cidr_v6)
-        return {
-            "netmask_v6_result": f"Netmask for CIDR value {cidr_v6} is {netmask_v6_result}"
-        }
+        if 1 <= cidr_v6 <= 128:
+            netmask_v6_result = cidr_to_netmaskv6(cidr_v6)
+            return {
+                "netmask_v6_result": f"Netmask for CIDR value {cidr_v6} is {netmask_v6_result}"
+            }
+        else:
+            return {"netmask_v6_result": "CIDR value must be between 1 and 128"}
     except ValueError:
         return {"netmask_v6_result": "Invalid CIDR value"}
 
@@ -93,6 +113,7 @@ def _handle_cidr_v6_to_netmask(cidr_v6_param):
 def _handle_get_all_hosts(network_cidr_param):
     """Helper function to handle getting all hosts from a network CIDR."""
     try:
+        ipaddress.ip_network(network_cidr_param, strict=False)
         host_list = list(get_all_host(network_cidr_param))
         return {"host_list": host_list}
     except ValueError as e:
