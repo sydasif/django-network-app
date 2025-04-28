@@ -20,7 +20,8 @@
                 <button type="submit">Submit</button>
             </div>
         </form>
-        <div id="netmask_result_display" class="result" style="margin-bottom: 20px;">{% if netmask_result %}{{ netmask_result|linebreaks }}{% endif %}</div>
+        <div id="netmask_result_display" class="result" style="margin-bottom: 20px;">{% if netmask_result %}{{
+            netmask_result|linebreaks }}{% endif %}</div>
 
         <h3>Netmask to CIDR</h3>
         <p>Creates a CIDR notation of a given subnet mask in decimal format.</p>
@@ -33,7 +34,8 @@
                 <button type="submit">Submit</button>
             </div>
         </form>
-        <div id="cidr_result_display" class="result" style="margin-bottom: 20px;">{% if cidr_result %}{{ cidr_result|linebreaks }}{% endif %}</div>
+        <div id="cidr_result_display" class="result" style="margin-bottom: 20px;">{% if cidr_result %}{{
+            cidr_result|linebreaks }}{% endif %}</div>
 
         <h3>IPv6 CIDR to Netmask</h3>
         <p>Creates an IPv6 format of a CIDR value.</p>
@@ -46,12 +48,13 @@
                 <button type="submit">Submit</button>
             </div>
         </form>
-        <div id="netmask_v6_result_display" class="result" style="margin-bottom: 20px;">{% if netmask_v6_result %}{{ netmask_v6_result|linebreaks }}{% endif %}</div>
+        <div id="netmask_v6_result_display" class="result" style="margin-bottom: 20px;">{% if netmask_v6_result %}{{
+            netmask_v6_result|linebreaks }}{% endif %}</div>
     </div>
 
     <!-- Right Column -->
     <div style="flex: 1;">
-        <h3>Get All Hosts from CIDR</h3>  {# Moved Section #}
+        <h3>Get All Hosts from CIDR</h3> {# Moved Section #}
         <p>Creates a list of all possible hosts from a given CIDR</p>
         <form id="network_cidr_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
             <div style="margin-bottom: 10px;">
@@ -82,7 +85,8 @@
             </div>
             {% endif %}
         </div>
-        <div id="host_list_error_display" class="result error" style="margin-bottom: 20px; color: red;">{% if host_list_error %}{{ host_list_error|linebreaks }}{% endif %}</div>
+        <div id="host_list_error_display" class="result error" style="margin-bottom: 20px; color: red;">{% if
+            host_list_error %}{{ host_list_error|linebreaks }}{% endif %}</div>
     </div>
 
 </div> <!-- End Main container -->
