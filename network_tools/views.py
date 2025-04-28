@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from netutils.ping import tcp_ping
 from netutils.ip import (
@@ -20,7 +21,8 @@ def ping(request):
     Handles TCP ping requests.
 
     Retrieves 'ip' and 'port' from GET parameters, performs a TCP ping,
-    and renders the ping results page.
+    and either returns a JSON response (for AJAX requests)
+    or renders the ping results page.
 
     Context passed to template:
         test_result (str): A message indicating the ping success or failure,
@@ -33,7 +35,10 @@ def ping(request):
     elif "ip" in request.GET:
         if is_ip(request.GET["ip"]) is False:
             test_result["test_result"] = "Please enter a valid IP Address"
-            return render(request, "network_tools/ping.html", test_result)
+            if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+                return JsonResponse(test_result)
+            else:
+                return render(request, "network_tools/ping.html", test_result)
         host_ip = request.GET["ip"]
         host_port = request.GET["port"]
         ping_result = tcp_ping(host_ip, host_port)
@@ -46,7 +51,10 @@ def ping(request):
                 f"Failure: Cannot open connection to Port {host_port} on host {host_ip}"
             )
 
-    return render(request, "network_tools/ping.html", test_result)
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return JsonResponse(test_result)
+    else:
+        return render(request, "network_tools/ping.html", test_result)
 
 
 def _handle_cidr_to_netmask(cidr_param):
@@ -97,7 +105,8 @@ def ip_addr(request):
 
     Retrieves 'cidr', 'netmask', 'cidr_v6', or 'network_cidr' from GET
     parameters, performs the requested conversion or calculation using
-    netutils, and renders the IP address tools page.
+    netutils, and either returns a JSON response (for AJAX requests)
+    or renders the IP address tools page.
 
     Context passed to template:
         netmask_result (str, optional): Result of CIDR to Netmask conversion.
@@ -117,4 +126,7 @@ def ip_addr(request):
     elif request.GET.get("network_cidr"):
         test_result.update(_handle_get_all_hosts(request.GET["network_cidr"]))
 
-    return render(request, "network_tools/ip_addr.html", test_result)
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return JsonResponse(test_result)
+    else:
+        return render(request, "network_tools/ip_addr.html", test_result)

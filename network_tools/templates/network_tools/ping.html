@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}TCP Ping{% endblock %}
 
@@ -6,7 +7,7 @@
 <h2>TCP Ping</h2>
 <p>Verifies whether a TCP port is open on a given IP address.</p>
 
-<form action="/ping/" method="get" style="margin-bottom: 20px;">
+<form id="ping_form" action="/ping/" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
         <label for="ip">Please enter Host IP Address:</label>
         <input id="ip" name="ip" required>
@@ -20,11 +21,11 @@
     </div>
 </form>
 
-{% if test_result %}
-    <div class="result" style="margin-bottom: 20px;">{{ test_result|linebreaks }}</div>
-{% endif %}
+<div id="ping_result_display" class="result" style="margin-bottom: 20px;">{% if test_result %}{{ test_result|linebreaks }}{% endif %}</div>
 
 <div style="margin-top: 30px;">
     <a href="{% url 'home' %}" style="text-decoration: none; font-weight: bold;">Home</a>
 </div>
+
+<script src="{% static 'network_tools/ping_tool.js' %}"></script>
 {% endblock %}

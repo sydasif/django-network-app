@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}IP Address Tools{% endblock %}
 
@@ -8,7 +9,7 @@
 
 <h3>CIDR to Netmask</h3>
 <p>Creates a decimal format of a CIDR value.</p>
-<form action="/ip_addr" method="get" style="margin-bottom: 20px;">
+<form id="cidr_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
         <label for="cidr">Please enter CIDR value:</label>
         <input id="cidr" type="number" name="cidr" min="1" max="32" required>
@@ -18,13 +19,11 @@
     </div>
 </form>
 
-{% if netmask_result %}
-    <div class="result" style="margin-bottom: 20px;">{{ netmask_result|linebreaks }}</div>
-{% endif %}
+<div id="netmask_result_display" class="result" style="margin-bottom: 20px;">{% if netmask_result %}{{ netmask_result|linebreaks }}{% endif %}</div>
 
 <h3>Netmask to CIDR</h3>
 <p>Creates a CIDR notation of a given subnet mask in decimal format.</p>
-<form action="/ip_addr" method="get" style="margin-bottom: 20px;">
+<form id="netmask_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
         <label for="netmask">Please enter a netmask value:</label>
         <input id="netmask" name="netmask" required>
@@ -34,13 +33,11 @@
     </div>
 </form>
 
-{% if cidr_result %}
-    <div class="result" style="margin-bottom: 20px;">{{ cidr_result|linebreaks }}</div>
-{% endif %}
+<div id="cidr_result_display" class="result" style="margin-bottom: 20px;">{% if cidr_result %}{{ cidr_result|linebreaks }}{% endif %}</div>
 
 <h3>IPv6 CIDR to Netmask</h3>
 <p>Creates an IPv6 format of a CIDR value.</p>
-<form action="/ip_addr" method="get" style="margin-bottom: 20px;">
+<form id="cidr_v6_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
         <label for="cidr_v6">Please enter CIDR value:</label>
         <input id="cidr_v6" type="number" name="cidr_v6" min="1" max="128" required>
@@ -50,12 +47,11 @@
     </div>
 </form>
 
-{% if netmask_v6_result %}
-    <div class="result" style="margin-bottom: 20px;">{{ netmask_v6_result|linebreaks }}</div>
-{% endif %}
+<div id="netmask_v6_result_display" class="result" style="margin-bottom: 20px;">{% if netmask_v6_result %}{{ netmask_v6_result|linebreaks }}{% endif %}</div>
 
 <h3>Get All Hosts from CIDR</h3>  {# New Section #}
-<form action="/ip_addr" method="get" style="margin-bottom: 20px;">
+<p>Creates a list of all possible hosts from a given CIDR</p>
+<form id="network_cidr_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
         <label for="network_cidr">Please enter network CIDR:</label>
         <input id="network_cidr" type="text" name="network_cidr" required>
@@ -65,22 +61,21 @@
     </div>
 </form>
 
-{% if host_list %}  {# New Result Display #}
-    <div class="result" style="margin-bottom: 20px;">
+<div id="host_list_display" class="result" style="margin-bottom: 20px;">
+    {% if host_list %}
         <ul>
             {% for host in host_list %}
                 <li>{{ host }}</li>
             {% endfor %}
         </ul>
-    </div>
-{% endif %}
+    {% endif %}
+</div>
 
-{% if host_list_error %}  {# New Error Display #}
-    <div class="result error" style="margin-bottom: 20px; color: red;">{{ host_list_error|linebreaks }}</div>
-{% endif %}
+<div id="host_list_error_display" class="result error" style="margin-bottom: 20px; color: red;">{% if host_list_error %}{{ host_list_error|linebreaks }}{% endif %}</div>
 
 <div style="margin-top: 30px;">
     <a href="{% url 'home' %}" style="text-decoration: none; font-weight: bold;">Home</a>
 </div>
 
+<script src="{% static 'network_tools/ip_tools.js' %}"></script>
 {% endblock %}
