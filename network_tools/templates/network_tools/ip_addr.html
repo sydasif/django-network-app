@@ -11,8 +11,8 @@
 <p>Creates a decimal format of a CIDR value.</p>
 <form id="cidr_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
-        <label for="cidr">Please enter CIDR value:</label>
-        <input id="cidr" type="number" name="cidr" min="1" max="32" required>
+        {{ cidr_to_netmask_form.cidr.label_tag }}
+        {{ cidr_to_netmask_form.cidr }}
     </div>
     <div>
         <button type="submit">Submit</button>
@@ -25,8 +25,8 @@
 <p>Creates a CIDR notation of a given subnet mask in decimal format.</p>
 <form id="netmask_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
-        <label for="netmask">Please enter a netmask value:</label>
-        <input id="netmask" name="netmask" required>
+        {{ netmask_to_cidr_form.netmask.label_tag }}
+        {{ netmask_to_cidr_form.netmask }}
     </div>
     <div>
         <button type="submit">Submit</button>
@@ -39,8 +39,8 @@
 <p>Creates an IPv6 format of a CIDR value.</p>
 <form id="cidr_v6_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
-        <label for="cidr_v6">Please enter CIDR value:</label>
-        <input id="cidr_v6" type="number" name="cidr_v6" min="1" max="128" required>
+        {{ cidr_v6_to_netmask_form.cidr_v6.label_tag }}
+        {{ cidr_v6_to_netmask_form.cidr_v6 }}
     </div>
     <div>
         <button type="submit">Submit</button>
@@ -53,8 +53,8 @@
 <p>Creates a list of all possible hosts from a given CIDR</p>
 <form id="network_cidr_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
-        <label for="network_cidr">Please enter network CIDR:</label>
-        <input id="network_cidr" type="text" name="network_cidr" required>
+        {{ get_all_hosts_form.network_cidr.label_tag }}
+        {{ get_all_hosts_form.network_cidr }}
     </div>
     <div>
         <button type="submit">Submit</button>

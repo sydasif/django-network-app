@@ -9,12 +9,12 @@
 
 <form id="ping_form" action="/ping/" method="get" style="margin-bottom: 20px;">
     <div style="margin-bottom: 10px;">
-        <label for="ip">Please enter Host IP Address:</label>
-        <input id="ip" name="ip" required>
+        {{ ping_form.ip.label_tag }}
+        {{ ping_form.ip }}
     </div>
     <div style="margin-bottom: 10px;">
-        <label for="port">Please enter TCP Port:</label>
-        <input id="port" type="number" name="port" min="0" max="65535" required>
+        {{ ping_form.port.label_tag }}
+        {{ ping_form.port }}
     </div>
     <div>
         <button type="submit">Submit</button>

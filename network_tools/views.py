@@ -10,6 +10,7 @@ from netutils.ip import (
     cidr_to_netmaskv6,
     get_all_host,
 )
+from . import forms
 
 
 def home(request):
@@ -30,6 +31,7 @@ def ping(request):
                            or an error message if input is invalid.
     """
     test_result = {}
+    ping_form = forms.PingForm(request.GET)
 
     ip_address = request.GET.get("ip")
     port_str = request.GET.get("port")
@@ -66,7 +68,11 @@ def ping(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return JsonResponse(test_result)
     else:
-        return render(request, "network_tools/ping.html", test_result)
+        return render(
+            request,
+            "network_tools/ping.html",
+            {"test_result": test_result, "ping_form": ping_form},
+        )
 
 
 def _handle_cidr_to_netmask(cidr_param):
@@ -137,6 +143,10 @@ def ip_addr(request):
         host_list_error (str, optional): Error message if network_cidr is invalid.
     """
     test_result = {}
+    cidr_to_netmask_form = forms.CidrToNetmaskForm(request.GET)
+    netmask_to_cidr_form = forms.NetmaskToCidrForm(request.GET)
+    cidr_v6_to_netmask_form = forms.CidrV6ToNetmaskForm(request.GET)
+    get_all_hosts_form = forms.GetAllHostsForm(request.GET)
 
     if request.GET.get("cidr"):
         test_result.update(_handle_cidr_to_netmask(request.GET["cidr"]))
@@ -150,4 +160,14 @@ def ip_addr(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return JsonResponse(test_result)
     else:
-        return render(request, "network_tools/ip_addr.html", test_result)
+        return render(
+            request,
+            "network_tools/ip_addr.html",
+            {
+                "test_result": test_result,
+                "cidr_to_netmask_form": cidr_to_netmask_form,
+                "netmask_to_cidr_form": netmask_to_cidr_form,
+                "cidr_v6_to_netmask_form": cidr_v6_to_netmask_form,
+                "get_all_hosts_form": get_all_hosts_form,
+            },
+        )
