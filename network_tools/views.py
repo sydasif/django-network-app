@@ -49,6 +49,48 @@ def ping(request):
     return render(request, "network_tools/ping.html", test_result)
 
 
+def _handle_cidr_to_netmask(cidr_param):
+    """Helper function to handle CIDR to Netmask conversion."""
+    try:
+        cidr = int(cidr_param)
+        netmask_result = cidr_to_netmask(cidr)
+        return {"netmask_result": f"Netmask for CIDR value {cidr} is {netmask_result}"}
+    except ValueError:
+        return {"netmask_result": "Invalid CIDR value"}
+
+
+def _handle_netmask_to_cidr(netmask_param):
+    """Helper function to handle Netmask to CIDR conversion."""
+    if is_netmask(netmask_param) is False:
+        return {"cidr_result": "Please enter a valid Netmask"}
+    else:
+        cidr_value = netmask_to_cidr(netmask_param)
+        return {
+            "cidr_result": f"CIDR Value for netmask {netmask_param} is {cidr_value}"
+        }
+
+
+def _handle_cidr_v6_to_netmask(cidr_v6_param):
+    """Helper function to handle IPv6 CIDR to Netmask conversion."""
+    try:
+        cidr_v6 = int(cidr_v6_param)
+        netmask_v6_result = cidr_to_netmaskv6(cidr_v6)
+        return {
+            "netmask_v6_result": f"Netmask for CIDR value {cidr_v6} is {netmask_v6_result}"
+        }
+    except ValueError:
+        return {"netmask_v6_result": "Invalid CIDR value"}
+
+
+def _handle_get_all_hosts(network_cidr_param):
+    """Helper function to handle getting all hosts from a network CIDR."""
+    try:
+        host_list = list(get_all_host(network_cidr_param))
+        return {"host_list": host_list}
+    except ValueError as e:
+        return {"host_list_error": str(e)}
+
+
 def ip_addr(request):
     """
     Handles various IP address and CIDR/Netmask conversions.
@@ -67,35 +109,12 @@ def ip_addr(request):
     test_result = {}
 
     if request.GET.get("cidr"):
-        cidr = int(request.GET["cidr"])
-        netmask_result = cidr_to_netmask(cidr)
-        test_result["netmask_result"] = (
-            f"Netmask for CIDR value {cidr} is {netmask_result}"
-        )
-
-    if request.GET.get("netmask"):
-        netmask = request.GET["netmask"]
-        if is_netmask(netmask) is False:
-            test_result["cidr_result"] = "Please enter a valid Netmask"
-        else:
-            cidr_value = netmask_to_cidr(netmask)
-            test_result["cidr_result"] = (
-                f"CIDR Value for netmask {netmask} is {cidr_value}"
-            )
-
-    if request.GET.get("cidr_v6"):
-        cidr_v6 = int(request.GET["cidr_v6"])
-        netmask_v6_result = cidr_to_netmaskv6(cidr_v6)
-        test_result["netmask_v6_result"] = (
-            f"Netmask for CIDR value {cidr_v6} is {netmask_v6_result}"
-        )
-
-    if request.GET.get("network_cidr"):
-        network_cidr = request.GET["network_cidr"]
-        try:
-            host_list = list(get_all_host(network_cidr))
-            test_result["host_list"] = host_list
-        except ValueError as e:
-            test_result["host_list_error"] = str(e)
+        test_result.update(_handle_cidr_to_netmask(request.GET["cidr"]))
+    elif request.GET.get("netmask"):
+        test_result.update(_handle_netmask_to_cidr(request.GET["netmask"]))
+    elif request.GET.get("cidr_v6"):
+        test_result.update(_handle_cidr_v6_to_netmask(request.GET["cidr_v6"]))
+    elif request.GET.get("network_cidr"):
+        test_result.update(_handle_get_all_hosts(request.GET["network_cidr"]))
 
     return render(request, "network_tools/ip_addr.html", test_result)
