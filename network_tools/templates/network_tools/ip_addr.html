@@ -100,6 +100,23 @@
                 {{ test_result.host_list_error|linebreaks }}
             {% endif %}
         </div>
+
+        <h3>Get Broadcast Address</h3>  <!-- ADDED -->
+        <p>Calculates the broadcast address for a given network CIDR.</p>  <!-- ADDED -->
+        <form id="broadcast_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">  <!-- ADDED -->
+            <div style="margin-bottom: 10px;">  <!-- ADDED -->
+                {{ get_broadcast_address_form.broadcast_network_cidr.label_tag }}  <!-- ADDED -->
+                {{ get_broadcast_address_form.broadcast_network_cidr }}  <!-- ADDED -->
+            </div>  <!-- ADDED -->
+            <div>  <!-- ADDED -->
+                <button type="submit">Submit</button>  <!-- ADDED -->
+            </div>  <!-- ADDED -->
+        </form>  <!-- ADDED -->
+        <div id="broadcast_result_display" class="result" style="margin-bottom: 20px;">  <!-- ADDED -->
+            {% if test_result.broadcast_result %}  <!-- ADDED -->
+                {{ test_result.broadcast_result|linebreaks }}  <!-- ADDED -->
+            {% endif %}  <!-- ADDED -->
+        </div>  <!-- ADDED -->
     </div>
 
 </div> <!-- End Main container -->

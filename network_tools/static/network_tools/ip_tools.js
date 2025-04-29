@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('netmask_v6_result_display').innerHTML = '';
                 document.getElementById('host_list_display').innerHTML = '';
                 document.getElementById('host_list_error_display').innerHTML = '';
+                document.getElementById('broadcast_result_display').innerHTML = '';  // ADDED
 
                 // Store host list data if present
                 if (data.host_list) {
@@ -82,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('host_list_display').innerHTML = hostListHTML;
                 } else if (data.host_list_error) {
                     document.getElementById('host_list_error_display').innerHTML = data.host_list_error;
+                } else if (data.broadcast_result) {  // ADDED
+                    document.getElementById('broadcast_result_display').innerHTML = data.broadcast_result;  // ADDED
                 }
             })
             .catch(error => {

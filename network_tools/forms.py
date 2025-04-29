@@ -26,3 +26,7 @@ class CidrV6ToNetmaskForm(forms.Form):
 
 class GetAllHostsForm(forms.Form):
     network_cidr = forms.CharField(label="Network CIDR", required=True)
+
+
+class GetBroadcastAddressForm(forms.Form):
+    broadcast_network_cidr = forms.CharField(label="Network CIDR", required=True)
