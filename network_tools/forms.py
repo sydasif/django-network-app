@@ -18,12 +18,6 @@ class NetmaskToCidrForm(forms.Form):
     netmask = forms.CharField(label="Netmask Value", required=True)
 
 
-class CidrV6ToNetmaskForm(forms.Form):
-    cidr_v6 = forms.IntegerField(
-        label="CIDR Value", min_value=1, max_value=128, required=True
-    )
-
-
 class GetAllHostsForm(forms.Form):
     network_cidr = forms.CharField(label="Network CIDR", required=True)
 
@@ -34,3 +28,7 @@ class GetBroadcastAddressForm(forms.Form):
 
 class GetFirstUsableForm(forms.Form):
     first_usable_network_cidr = forms.CharField(label="Network CIDR", required=True)
+
+
+class GetUsableRangeForm(forms.Form):
+    usable_range_network_cidr = forms.CharField(label="Network CIDR", required=True)

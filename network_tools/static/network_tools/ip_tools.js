@@ -54,11 +54,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Clear all result areas
                 document.getElementById('netmask_result_display').innerHTML = '';
                 document.getElementById('cidr_result_display').innerHTML = '';
-                document.getElementById('netmask_v6_result_display').innerHTML = '';
                 document.getElementById('host_list_display').innerHTML = '';
                 document.getElementById('host_list_error_display').innerHTML = '';
                 document.getElementById('broadcast_result_display').innerHTML = '';
-                document.getElementById('first_usable_result_display').innerHTML = '';  // ADDED
+                document.getElementById('first_usable_result_display').innerHTML = '';
+                document.getElementById('usable_range_result_display').innerHTML = '';  // ADDED
 
                 // Store host list data if present
                 if (data.host_list) {
@@ -70,8 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('netmask_result_display').innerHTML = data.netmask_result;
                 } else if (data.cidr_result) {
                     document.getElementById('cidr_result_display').innerHTML = data.cidr_result;
-                } else if (data.netmask_v6_result) {
-                    document.getElementById('netmask_v6_result_display').innerHTML = data.netmask_v6_result;
                 } else if (data.host_list) {
                     let hostListHTML = '<div style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 5px;">';
                     hostListHTML += '<table style="width: 100%; border-collapse: collapse;">';
@@ -86,8 +84,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('host_list_error_display').innerHTML = data.host_list_error;
                 } else if (data.broadcast_result) {
                     document.getElementById('broadcast_result_display').innerHTML = data.broadcast_result;
-                } else if (data.first_usable_result) {  // ADDED
-                    document.getElementById('first_usable_result_display').innerHTML = data.first_usable_result;  // ADDED
+                } else if (data.first_usable_result) {
+                    document.getElementById('first_usable_result_display').innerHTML = data.first_usable_result;
+                } else if (data.usable_range_result) {  // ADDED
+                    document.getElementById('usable_range_result_display').innerHTML = data.usable_range_result;  // ADDED
                 }
             })
             .catch(error => {
