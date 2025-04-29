@@ -7,6 +7,7 @@ from netutils.ip import (
     cidr_to_netmaskv6,
     get_all_host,
     get_broadcast_address,  # ADDED
+    get_first_usable,  # ADDED
     is_ip,
     is_netmask,
     netmask_to_cidr,
@@ -129,7 +130,7 @@ def _handle_get_all_hosts(network_cidr_param):
         return {"host_list_error": str(e)}
 
 
-def _handle_get_broadcast_address(broadcast_network_cidr_param):  # ADDED
+def _handle_get_broadcast_address(broadcast_network_cidr_param):
     """Helper function to handle getting the broadcast address from a network CIDR."""
     try:
         broadcast_address = get_broadcast_address(broadcast_network_cidr_param)
@@ -138,14 +139,23 @@ def _handle_get_broadcast_address(broadcast_network_cidr_param):  # ADDED
         return {"broadcast_result": str(e)}
 
 
+def _handle_get_first_usable(first_usable_network_cidr_param):  # ADDED
+    """Helper function to handle getting the first usable IP address from a network CIDR."""
+    try:
+        first_usable_address = get_first_usable(first_usable_network_cidr_param)
+        return {"first_usable_result": f"First usable address: {first_usable_address}"}
+    except ValueError as e:
+        return {"first_usable_result": str(e)}
+
+
 def ip_addr(request):
     """
     Handles various IP address and CIDR/Netmask conversions.
 
-    Retrieves 'cidr', 'netmask', 'cidr_v6', 'network_cidr', or 'broadcast_network_cidr' from GET
-    parameters, performs the requested conversion or calculation using
-    netutils, and either returns a JSON response (for AJAX requests)
-    or renders the IP address tools page.
+    Retrieves 'cidr', 'netmask', 'cidr_v6', 'network_cidr', 'broadcast_network_cidr',
+    or 'first_usable_network_cidr' from GET parameters, performs the requested
+    conversion or calculation using netutils, and either returns a JSON response
+    (for AJAX requests) or renders the IP address tools page.
 
     Context passed to template:
         netmask_result (str, optional): Result of CIDR to Netmask conversion.
@@ -153,14 +163,16 @@ def ip_addr(request):
         netmask_v6_result (str, optional): Result of IPv6 CIDR to Netmask conversion.
         host_list (list, optional): List of host IPs generated from network_cidr.
         host_list_error (str, optional): Error message if network_cidr is invalid.
-        broadcast_result (str, optional): Result of getting broadcast address.  # ADDED
+        broadcast_result (str, optional): Result of getting broadcast address.
+        first_usable_result (str, optional): Result of getting first usable address.  # ADDED
     """
     test_result = {}
     cidr_to_netmask_form = forms.CidrToNetmaskForm(request.GET)
     netmask_to_cidr_form = forms.NetmaskToCidrForm(request.GET)
     cidr_v6_to_netmask_form = forms.CidrV6ToNetmaskForm(request.GET)
     get_all_hosts_form = forms.GetAllHostsForm(request.GET)
-    get_broadcast_address_form = forms.GetBroadcastAddressForm(request.GET)  # ADDED
+    get_broadcast_address_form = forms.GetBroadcastAddressForm(request.GET)
+    get_first_usable_form = forms.GetFirstUsableForm(request.GET)  # ADDED
 
     if request.GET.get("cidr"):
         test_result.update(_handle_cidr_to_netmask(request.GET["cidr"]))
@@ -170,9 +182,13 @@ def ip_addr(request):
         test_result.update(_handle_cidr_v6_to_netmask(request.GET["cidr_v6"]))
     elif request.GET.get("network_cidr"):
         test_result.update(_handle_get_all_hosts(request.GET["network_cidr"]))
-    elif request.GET.get("broadcast_network_cidr"):  # ADDED
+    elif request.GET.get("broadcast_network_cidr"):
         test_result.update(
             _handle_get_broadcast_address(request.GET["broadcast_network_cidr"])
+        )
+    elif request.GET.get("first_usable_network_cidr"):  # ADDED
+        test_result.update(
+            _handle_get_first_usable(request.GET["first_usable_network_cidr"])
         )
 
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
@@ -187,6 +203,7 @@ def ip_addr(request):
                 "netmask_to_cidr_form": netmask_to_cidr_form,
                 "cidr_v6_to_netmask_form": cidr_v6_to_netmask_form,
                 "get_all_hosts_form": get_all_hosts_form,
-                "get_broadcast_address_form": get_broadcast_address_form,  # ADDED
+                "get_broadcast_address_form": get_broadcast_address_form,
+                "get_first_usable_form": get_first_usable_form,  # ADDED
             },
         )

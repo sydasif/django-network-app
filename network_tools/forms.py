@@ -30,3 +30,7 @@ class GetAllHostsForm(forms.Form):
 
 class GetBroadcastAddressForm(forms.Form):
     broadcast_network_cidr = forms.CharField(label="Network CIDR", required=True)
+
+
+class GetFirstUsableForm(forms.Form):
+    first_usable_network_cidr = forms.CharField(label="Network CIDR", required=True)

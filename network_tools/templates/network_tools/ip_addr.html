@@ -101,20 +101,37 @@
             {% endif %}
         </div>
 
-        <h3>Get Broadcast Address</h3>  <!-- ADDED -->
-        <p>Calculates the broadcast address for a given network CIDR.</p>  <!-- ADDED -->
-        <form id="broadcast_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">  <!-- ADDED -->
+        <h3>Get Broadcast Address</h3>
+        <p>Calculates the broadcast address for a given network CIDR.</p>
+        <form id="broadcast_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">
+            <div style="margin-bottom: 10px;">
+                {{ get_broadcast_address_form.broadcast_network_cidr.label_tag }}
+                {{ get_broadcast_address_form.broadcast_network_cidr }}
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        <div id="broadcast_result_display" class="result" style="margin-bottom: 20px;">
+            {% if test_result.broadcast_result %}
+                {{ test_result.broadcast_result|linebreaks }}
+            {% endif %}
+        </div>
+
+        <h3>Get First Usable IP</h3>  <!-- ADDED -->
+        <p>Calculates the first usable IP address for a given network CIDR.</p>  <!-- ADDED -->
+        <form id="first_usable_form" action="/ip_addr" method="get" style="margin-bottom: 20px;">  <!-- ADDED -->
             <div style="margin-bottom: 10px;">  <!-- ADDED -->
-                {{ get_broadcast_address_form.broadcast_network_cidr.label_tag }}  <!-- ADDED -->
-                {{ get_broadcast_address_form.broadcast_network_cidr }}  <!-- ADDED -->
+                {{ get_first_usable_form.first_usable_network_cidr.label_tag }}  <!-- ADDED -->
+                {{ get_first_usable_form.first_usable_network_cidr }}  <!-- ADDED -->
             </div>  <!-- ADDED -->
             <div>  <!-- ADDED -->
                 <button type="submit">Submit</button>  <!-- ADDED -->
             </div>  <!-- ADDED -->
         </form>  <!-- ADDED -->
-        <div id="broadcast_result_display" class="result" style="margin-bottom: 20px;">  <!-- ADDED -->
-            {% if test_result.broadcast_result %}  <!-- ADDED -->
-                {{ test_result.broadcast_result|linebreaks }}  <!-- ADDED -->
+        <div id="first_usable_result_display" class="result" style="margin-bottom: 20px;">  <!-- ADDED -->
+            {% if test_result.first_usable_result %}  <!-- ADDED -->
+                {{ test_result.first_usable_result|linebreaks }}  <!-- ADDED -->
             {% endif %}  <!-- ADDED -->
         </div>  <!-- ADDED -->
     </div>
